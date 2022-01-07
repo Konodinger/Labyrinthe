@@ -1,3 +1,7 @@
+package tp04;
+
+import java.util.ArrayList;
+
 public class Dijkstra{
 	public PreviousInterface dijkstra(GraphInterface g,
 									   VertexInterface r,
@@ -9,7 +13,7 @@ public class Dijkstra{
 		double poidsPivot;
 		pi.set(r, 0);
 		int n = g.length();
-		VertexInterface[] listeSommets = g.vertexList();
+		ArrayList<VertexInterface> listeSommets = g.vertexList();
 		double pArete;
 		for (VertexInterface i : listeSommets) {
 			if (i != r) pi.set(i, Double.POSITIVE_INFINITY);
@@ -22,7 +26,7 @@ public class Dijkstra{
 					pi.set(y, pArete + poidsPivot);
 					previous.setPrevious(y, pivot);
 				}
-			VertexInterface[] B = g.notIn(a);
+			ArrayList<VertexInterface> B = g.notIn(a);
 			pivot = pi.minOfSet(B);
 			a.setAdd(pivot);
 			}
