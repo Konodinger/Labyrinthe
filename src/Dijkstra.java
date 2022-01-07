@@ -1,0 +1,32 @@
+public class Dijkstra{
+	public PreviousInterface dijkstra(GraphInterface g,
+									   VertexInterface r,
+									   ASetInterface a,
+									   PiInterface pi,
+									   PreviousInterface previous) {
+		a.setAdd(r);
+		VertexInterface pivot = r;
+		double poidsPivot;
+		pi.set(r, 0);
+		int n = g.length();
+		VertexInterface[] listeSommets = g.vertexList();
+		double pArete;
+		for (VertexInterface i : listeSommets) {
+			if (i != r) pi.set(i, Double.POSITIVE_INFINITY);
+		}
+		for (int j = 1; j < n; j++) {
+			poidsPivot = pi.get(pivot);
+			for (VertexInterface y : g.successorVertex(pivot)) {
+				pArete = g.p(pivot, y);
+				if (!a.isInSet(y) && (pArete + poidsPivot < pi.get(y))) {
+					pi.set(y, pArete + poidsPivot);
+					previous.setPrevious(y, pivot);
+				}
+			VertexInterface[] B = g.notIn(a);
+			pivot = pi.minOfSet(B);
+			a.setAdd(pivot);
+			}
+		}
+		return previous;
+	}
+}
