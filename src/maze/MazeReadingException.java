@@ -1,6 +1,12 @@
-package tp04;
+package maze;
 //Classe générant une exception peresonnalisée lors de la lecture du fichier
 public class MazeReadingException extends Exception{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
 	private String fileName;
 	private int errorLine;
 	private String message;
@@ -11,11 +17,4 @@ public class MazeReadingException extends Exception{
 		this.errorLine = errorLine;
 		this.message = message;
 	}
-	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 }

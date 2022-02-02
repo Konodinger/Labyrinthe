@@ -1,4 +1,4 @@
-package tp04;
+package maze;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.ArrayList;
+
+import dijkstra.ASetInterface;
+import dijkstra.GraphInterface;
+import dijkstra.VertexInterface;
 
 public class Maze implements GraphInterface{
 	//Le labyrinthe est entièrement défini par son tableau de case
@@ -46,7 +50,7 @@ public class Maze implements GraphInterface{
 		return 0;
 	}
 	
-	public final void initFromTextFile(String fileName) {
+	public final void initFromTextFile(String fileName) throws IOException, MazeReadingException {
 		BufferedReader text = null;
 		int colonne = 0;
 		try {
@@ -90,14 +94,18 @@ public class Maze implements GraphInterface{
 		} catch(FileNotFoundException e) {
 			System.out.println("Erreur : fichier introuvable. Vérifier l'adresse du fichier : " + fileName);
 			System.out.println(e);
+			throw e;
 		} catch(IOException e) {
 			System.out.println("Erreur : problème avec l'ouverture du fichier");
 			System.out.println(e);
+			throw e;
 		} catch(MazeReadingException e) {
 			System.out.println(e);
+			throw e;
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Erreur en lisant la case de coordonnées (" + Integer.toString(height) + "," + Integer.toString(colonne + 1) + ") : la case est introuvable.");
 			System.out.println(e);
+			throw e;
 		} finally {
 			try {
 				text.close();
@@ -105,11 +113,12 @@ public class Maze implements GraphInterface{
 			} catch(IOException e) {
 			System.out.println("Erreur : problème avec la fermeture du fichier");
 			System.out.println(e);
+			throw e;
 			}
 		}
 	}
 	
-	public final void saveToTextFile(String fileName) {
+	public final void saveToTextFile(String fileName) throws FileNotFoundException {
 		PrintWriter pw = null;
 		try {
 			pw = new PrintWriter(fileName);
@@ -124,9 +133,11 @@ public class Maze implements GraphInterface{
 		} catch (FileNotFoundException e) {
 			System.out.println("Erreur : Impossible d'ouvrir ou bien d'écrire le fichier  à l'emplacement" + fileName + ".");
 			System.out.println(e);
+			throw e;
 		} catch (SecurityException e) {
 			System.out.println("Erreur : accès à l'écriture d'un fichier à l'emplacement " + fileName + " refusé.");
 			System.out.println(e);
+			throw e;
 		} finally {
 			try {
 				pw.close();
@@ -134,6 +145,7 @@ public class Maze implements GraphInterface{
 			} catch(Exception e) {
 			System.out.println("Erreur : problème avec la fermeture du fichier");
 			System.out.println(e);
+			throw e;
 			}
 		}
 	}
