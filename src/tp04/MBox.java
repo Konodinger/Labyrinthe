@@ -17,6 +17,6 @@ public class MBox implements VertexInterface{
 		return y;
 	}
 	public String getLabel() {
-		return "(" + Integer.toString(x) + "," + Integer.toString(y) + ")";
+		return "M";
 	}
 }
