@@ -23,10 +23,9 @@ public class Pi extends Hashtable<VertexInterface, Double> implements PiInterfac
 	@Override
 	public double get(VertexInterface sommet) {
 		// Retourne la distance inscrite pour ce sommet, ou null si celui-ci n'en a pas encore d'associée.
-		return get(sommet);
+		return super.get(sommet);
 	}
 
-	@Override
 	public VertexInterface minOfSet(ArrayList<VertexInterface> A) {
 		int taille = A.size();
 		VertexInterface sommet = null;

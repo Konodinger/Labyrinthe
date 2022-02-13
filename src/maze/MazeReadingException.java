@@ -12,7 +12,7 @@ public class MazeReadingException extends Exception{
 	private String message;
 	
 	public MazeReadingException(String fileName, int errorLine, String message) {
-		super("Erreur durant la lecture du fichier" + fileName + "\n√Ä la ligne " + Integer.toString(errorLine) + " : " + message);
+		super("Erreur durant la lecture du fichier" + fileName + "\n‡ la ligne " + Integer.toString(errorLine) + " : " + message);
 		this.fileName = fileName;
 		this.errorLine = errorLine;
 		this.message = message;
