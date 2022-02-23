@@ -14,26 +14,24 @@ import maze.MBox;
 import maze.Maze;
 
 public class MainTest {
-
+	
+	private static String file = "data/labyrinthe";
+	private static Maze maze;
+	
 	public static void main(String[] args) {
-		final Maze maze = new Maze(new ArrayList<ArrayList<MBox>>());
-		try {
-			maze.initFromTextFile("data/labyrinthe.txt");			
-		} catch (Exception e) {
-			System.out.println("Erreur durant la création du labyrinthe");
-			System.out.println(e);
-		}
 		
+		//Manipulation du labyrinthe
 		try {
-			/*Test des méthodes length et successorVertex :
+			
+			/*Test des mï¿½thodes length et successorVertex :
 			System.out.println(maze.length());
 			private ArrayList<VertexInterface> neighbors = maze.successorVertex(maze.getLaby().get(6).get(7)); 
 			for (VertexInterface vertex : neighbors) {
 				MBox box = (MBox) vertex;
-				System.out.println("Case de type " + box.getLabel() + ", de coordonnées (" + Integer.toString(box.getX()) + "," + Integer.toString(box.getY()) + ").");
+				System.out.println("Case de type " + box.getLabel() + ", de coordonnï¿½es (" + Integer.toString(box.getX()) + "," + Integer.toString(box.getY()) + ").");
 				}*/
 			
-			/*Test des méthodes vertexList et notIn :
+			/*Test des mï¿½thodes vertexList et notIn :
 			for (VertexInterface box : maze.vertexList()) {
 				System.out.print(box.getLabel());
 			}
@@ -47,47 +45,84 @@ public class MainTest {
 			}
 			System.out.println();*/
 			
-			DBox depart = maze.getDepart();
-			ABox arrivee = maze.getArrivee();
-			System.out.println("Lancement de l'algorithme de dijkstra...");
-			Previous previous = (Previous) Dijkstra.dijkstra((GraphInterface) maze, (VertexInterface) depart);
-			System.out.println("Algorithme de dijkstra effectué !");
+			//Chargement du labyinthe Ã  partir d'un fichier
+			mazeInit(file);
 			
-			//Tracé du chemin
-			MBox chemin = (MBox) previous.getPrevious(arrivee);
-			while ((chemin != depart) && (chemin != null)) {
-				chemin.setHighlight(true);
-				chemin = (MBox) previous.getPrevious(chemin);
-			}
-			if (chemin == depart) {
-				System.out.println("Chemin le plus court tracé !");
-			} else {
-				System.out.println("Erreur : impossible de tracer le plus court chemin. Il semble que le labyrinthe ne soit pas résolvable...");
-			}
+			//Resolution du labyrinthe
+			mazeResolve();
 			
 			//Impression de dijkstra
-			for (ArrayList<MBox> ligne : maze.getLaby()) {
-				for (MBox box : ligne) {
-					if (box.getHighlight()) {
-						System.out.print("·");
-					} else {
-						System.out.print(box.getLabel());
-					}
-				}
-				System.out.println();
-			}
+			mazePrint();
+			
+			//Sauvegarde du labyrinthe
+			mazeSave(file + "-S");
+			
 		} catch (Exception e) {
 			System.out.println("Erreur durant la manipulation du labyrinthe");
 			System.out.println(e);
 		}
-		
+	}
+	
+	private static void mazeInit(String adresse) throws Exception {
+		try {
+			maze = new Maze(new ArrayList<ArrayList<MBox>>());
+			maze.initFromTextFile(adresse + ".txt");
+		} catch (Exception e) {
+			System.out.println("Erreur durant la crï¿½ation du labyrinthe");
+			throw e;
+		}
+	}
+	
+	private static void mazeSave(String adresse) throws Exception {
 		try {
 			/*Test de l'erreur de sauvegarde :
 			maze.getLaby().get(2).remove(2); */
-			maze.saveToTextFile("data/labyrinthe-S.txt");
+			maze.saveToTextFile(adresse + ".txt");
 		} catch (Exception e) {
 			System.out.println("Erreur durant la sauvegarde du labyrinthe");
-			System.out.println(e);
+			throw e;
+		}
+	}
+	
+	private static void mazePrint() {
+		for (ArrayList<MBox> ligne : maze.getLaby()) {
+			for (MBox box : ligne) {
+				if (box.getHighlight()) {
+					System.out.print("ï¿½");
+				} else {
+					System.out.print(box.getLabel());
+				}
+			}
+			System.out.println();
+		}
+	}
+	
+	private static void mazeResolve() {
+		final DBox depart = maze.getDepart();
+		final ABox arrivee = maze.getArrivee();
+		System.out.println("Lancement de l'algorithme de dijkstra...");
+		final Previous previous = (Previous) Dijkstra.dijkstra((GraphInterface) maze, (VertexInterface) depart);
+		System.out.println("Algorithme de dijkstra effectuï¿½ !");
+		//Tracï¿½ du chemin
+		if (mazePath(previous, depart, arrivee)) {
+			System.out.println("Le labyrinthe n'est pas rÃ©solvable.");
+		}
+	}
+	
+	private static boolean mazePath(Previous previous, MBox depart, MBox arrivee) {
+		MBox chemin = (MBox) previous.getPrevious(arrivee);
+		int securite = maze.length();
+		while ((chemin != depart) && (chemin != null) && (securite > 0)) {
+			chemin.setHighlight(true);
+			chemin = (MBox) previous.getPrevious(chemin);
+			securite--;
+		}
+		if (chemin == depart) {
+			System.out.println("Chemin le plus court tracï¿½ !");
+			return true;
+		} else {
+			System.out.println("Erreur : impossible de tracer le chemin.");
+			return false;
 		}
 	}
 
