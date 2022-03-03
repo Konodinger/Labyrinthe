@@ -21,12 +21,12 @@ public class MazePanel extends JPanel {
 		this.app = app;
 		maze = app.getMaze();
 		tileList = new ArrayList<MazeTile>();
-		MazeTile tile;
+		MazeTile nTile;
 		setLayout(new GridLayout(maze.getHeight(), maze.getWidth()));
 		for (VertexInterface box : maze.vertexList()) {
-			tile = new MazeTile(app, maze, (MBox) box);
-			add(tile);
-			tileList.add(tile);
+			nTile = new MazeTile(app, (MBox) box);
+			add(nTile);
+			tileList.add(nTile);
 		}
 		
 		setBackground(Color.WHITE);

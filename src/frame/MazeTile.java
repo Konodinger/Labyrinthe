@@ -10,14 +10,16 @@ import maze.Maze;
 public class MazeTile extends JPanel {
 	
 	private final MazeApp app;
-	private final Maze maze;
-	private static MBox box;
+	private MBox box;
+	private final TileMouseListener tileMouseListener;
 	
-	public MazeTile(MazeApp app, Maze maze, MBox box) {
+	public MazeTile(MazeApp app, MBox box) {
 		this.app = app;
-		this.maze = maze;
 		this.box = box;
 		setBackground();
+		tileMouseListener = new TileMouseListener(this);
+		
+		addMouseListener(tileMouseListener);
 	}
 	
 	private void setBackground() {
@@ -42,11 +44,20 @@ public class MazeTile extends JPanel {
 			}
 		}
 	}
+	
+	public MBox getBox() {
+		return box;
+	}
 
 	public void notifyForUpdate() {
 		setBackground();
 		repaint();
 		
+	}
+
+	public void replace() {
+		box = app.getMaze().changeBox(box.getX(), box.getY());
+		notifyForUpdate();
 	}
 
 }

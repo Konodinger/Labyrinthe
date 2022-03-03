@@ -26,6 +26,7 @@ public class Maze implements GraphInterface{
 	private static ArrayList<VertexInterface> liste;
 	private static DBox depart;
 	private static ABox arrivee;
+	private static boolean highlighted;
 	private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
 	
 	public Maze(ArrayList<ArrayList<MBox>> laby) throws Exception{
@@ -34,6 +35,7 @@ public class Maze implements GraphInterface{
 		depart = null;
 		arrivee = null;
 		height = laby.size();
+		highlighted = false;
 		if (height == 0 ) {
 			width = 0;
 		} else {
@@ -93,6 +95,10 @@ public class Maze implements GraphInterface{
 		return height*width;
 	}
 	
+	public boolean getHighlighted() {
+		return highlighted;
+	}
+	
 	
 	public void addObserver(ChangeListener listener) {
 		listeners.add(listener);
@@ -147,17 +153,20 @@ public class Maze implements GraphInterface{
 		return Double.POSITIVE_INFINITY;
 	}
 	
-	public void Resolve() {
-		System.out.println("Lancement de l'algorithme de dijkstra...");
-		final Previous previous = (Previous) Dijkstra.dijkstra((GraphInterface) this, (VertexInterface) depart);
-		System.out.println("Algorithme de dijkstra effectué !");
-		//Tracé du chemin
-		if (!Path(previous)) {
-			System.out.println("Le labyrinthe n'est pas résolvable.");
+	public boolean resolve() {
+		if ((depart != null) && (arrivee != null)) {
+			final Previous previous = (Previous) Dijkstra.dijkstra((GraphInterface) this, (VertexInterface) depart);
+			System.out.println("Algorithme de dijkstra effectué !");
+			//Tracé du chemin
+			if (path(previous)) {
+				return true;
+			}
 		}
+		System.out.println("Le labyrinthe n'est pas résolvable.");
+		return false;
 	}
 	
-	public boolean Path(Previous previous) {
+	public boolean path(Previous previous) {
 		MBox chemin = (MBox) previous.getPrevious(arrivee);
 		int securite = height*width;
 		while ((chemin != depart) && (chemin != null) && (securite > 0)) {
@@ -165,21 +174,37 @@ public class Maze implements GraphInterface{
 			chemin = (MBox) previous.getPrevious(chemin);
 			securite--;
 		}
+		highlighted = true;
 		stateChanges();
-		if (chemin == depart) {
-			System.out.println("Chemin le plus court tracé !");
-			return true;
-		} else {
-			System.out.println("Erreur : impossible de tracer le chemin.");
-			return false;
-		}
+		return (chemin == depart);
 	}
 	
 	public void eraseHighlight() {
 		for (VertexInterface box : liste) {
 			((MBox) box).setHighlight(false);
 		}
+		highlighted = false;
 		stateChanges();
+	}
+	
+	public MBox changeBox(int x, int y) {
+		if (highlighted) {
+			eraseHighlight();
+		}
+		MBox box;
+		switch (laby.get(x).get(y).getLabel()) {
+		case "W" :
+			laby.get(x).set(y, box = new EBox(x, y));
+			break;
+		case "A" :
+			arrivee = null;
+		case "D" :
+			depart = null;
+		default :
+			laby.get(x).set(y, box = new WBox(x, y));
+		}
+		liste.set(x*width + y, box);
+		return box;
 	}
 	
 	
@@ -232,7 +257,7 @@ public class Maze implements GraphInterface{
 				System.out.println("Ligne " + Integer.toString(height) + " lue !");
 				laby.add(array);
 				height ++;
-			}		
+			}
 		} catch(FileNotFoundException e) {
 			System.out.println("Erreur : fichier introuvable. Vérifier l'adresse du fichier : " + fileName);
 			System.out.println(e);
@@ -249,9 +274,10 @@ public class Maze implements GraphInterface{
 			throw e;
 		} finally {
 			try {
+				highlighted = false;
+				stateChanges();
 				text.close();
 				System.out.println("Fermeture du fichier à l'adresse " + fileName);
-				stateChanges();
 			} catch(IOException e) {
 			System.out.println("Erreur : problème avec la fermeture du fichier");
 			System.out.println(e);

@@ -11,6 +11,7 @@ public class MazeApp extends JFrame implements ChangeListener {
 
 	private final MazeMenuBar menuBar;
 	private final WindowPanel windowPanel;
+	private final TileKeyBoardListener tileKeyBoardListener;
 	
 	private static Maze maze;
 
@@ -28,6 +29,7 @@ public class MazeApp extends JFrame implements ChangeListener {
 		setJMenuBar(menuBar = new MazeMenuBar(this));
 		setContentPane(windowPanel = new WindowPanel(this));
 		maze.addObserver(this);
+		tileKeyBoardListener = new TileKeyBoardListener(this);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();

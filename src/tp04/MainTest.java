@@ -50,7 +50,7 @@ public class MainTest {
 			mazeInit();
 			
 			//Resolution du labyrinthe
-			maze.Resolve();
+			//maze.resolve();
 			
 			//Impression de dijkstra
 			mazePrint();
