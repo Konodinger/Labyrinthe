@@ -5,11 +5,12 @@ import dijkstra.VertexInterface;
 public class MBox implements VertexInterface{
 	private int x;
 	private int y;
-	private boolean highlight = false;
+	private boolean highlight;
 	
 	public MBox(int x, int y) {
 		this.x = x;
 		this.y = y;
+		highlight = false;
 	}
 
 	public int getX() {

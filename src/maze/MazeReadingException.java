@@ -1,5 +1,5 @@
 package maze;
-//Classe gÃ©nÃ©rant une exception peresonnalisÃ©e lors de la lecture du fichier
+//Classe générant une exception peresonnalisée lors de la lecture du fichier
 public class MazeReadingException extends Exception{
 	/**
 	 * 
