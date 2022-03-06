@@ -1,5 +1,6 @@
 package maze;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class Maze implements GraphInterface{
 	
 	public Maze(ArrayList<ArrayList<MBox>> laby) throws Exception{
 		this.laby = laby;
-		liste = null;
+		liste = new ArrayList<VertexInterface>();
 		depart = null;
 		arrivee = null;
 		height = laby.size();
@@ -241,118 +242,143 @@ public class Maze implements GraphInterface{
 	}
 	
 	
-	public final void initFromTextFile(String fileName) throws IOException, MazeReadingException {
-		BufferedReader text = null;
-		int colonne = 0;
-		MBox box;
-		liste = new ArrayList<VertexInterface>();
-		try {
-			// Mesure de la largeur
-			Reader file = new FileReader(fileName);
-			text = new BufferedReader(file);
-			String ligne = text.readLine();
-			width = ligne.length();
-			// Lecture  du fichier et mesure de la hauteur
-			height = 0;
-			laby = new ArrayList<ArrayList<MBox>>();
-			file = new FileReader(fileName);
-			text = new BufferedReader(file);
-				
-			ArrayList<MBox> array;
-			while ((ligne = text.readLine()) != null) {
-				array = new ArrayList<MBox>();
-				if (ligne.length() != width) {
-					throw new MazeReadingException(fileName, height, "la largeur du labyrinthe lu n'est pas constante.");
-				};
-				for (colonne = 0; colonne < width; colonne ++) {
-					switch (ligne.charAt(colonne)) {
-					case 'E':
-						box = (EBox) new EBox(height, colonne);
-						break;
-					case 'W':
-						box = (WBox) new WBox(height, colonne);
-						break;
-					case 'D' :
-						box = (DBox) new DBox(height, colonne);
-						depart = (DBox) box;
-						break;
-					case 'A' :
-						box = (ABox) new ABox(height, colonne);
-						arrivee = (ABox) box;
-						break;
-					default :
-						throw new MazeReadingException(fileName, height, "la case de coordonnées (" + Integer.toString(height) + "," + Integer.toString(colonne) + ") n'est pas traduisible en MBox.");
-					}
-					array.add(box);
-					liste.add(box);
-					
-				}
-				System.out.println("Ligne " + Integer.toString(height) + " lue !");
-				laby.add(array);
-				height ++;
-			}
-		} catch(FileNotFoundException e) {
-			System.out.println("Erreur : fichier introuvable. Vérifier l'adresse du fichier : " + fileName);
-			System.out.println(e);
-			throw e;
-		} catch(IOException e) {
-			System.out.println("Erreur : problème avec l'ouverture du fichier");
-			System.out.println(e);
-			throw e;
-		} catch(MazeReadingException e) {
-			throw e;
-		} catch (IndexOutOfBoundsException e) {
-			System.out.println("Erreur en lisant la case de coordonnées (" + Integer.toString(height) + "," + Integer.toString(colonne) + ") : la case est introuvable.");
-			System.out.println(e);
-			throw e;
-		} finally {
+	public boolean isValidFileName(final String fileName) {
+	    final File aFile = new File(fileName);
+	    try {
+	        if (aFile.createNewFile()) {
+	            aFile.delete();
+	        }
+	    } catch (IOException e) {
+	        return false;
+	    }
+	    return true;
+	}
+	
+	public final boolean initFromTextFile(String fileName) throws IOException, MazeReadingException {
+		if (isValidFileName(fileName)) {
+			BufferedReader text = null;
+			int colonne = 0;
+			MBox box;
+			liste = new ArrayList<VertexInterface>();
+			fileName = "data/" + fileName + ".txt";
+			
 			try {
-				highlighted = false;
-				stateChanges();
-				text.close();
-				System.out.println("Fermeture du fichier à l'adresse " + fileName);
+				// Mesure de la largeur
+				Reader file = new FileReader(fileName);
+				text = new BufferedReader(file);
+				String ligne = text.readLine();
+				width = ligne.length();
+				// Lecture  du fichier et mesure de la hauteur
+				height = 0;
+				laby = new ArrayList<ArrayList<MBox>>();
+				file = new FileReader(fileName);
+				text = new BufferedReader(file);
+					
+				ArrayList<MBox> array;
+				while ((ligne = text.readLine()) != null) {
+					array = new ArrayList<MBox>();
+					if (ligne.length() != width) {
+						throw new MazeReadingException(fileName, height, "la largeur du labyrinthe lu n'est pas constante.");
+					};
+					for (colonne = 0; colonne < width; colonne ++) {
+						switch (ligne.charAt(colonne)) {
+						case 'E':
+							box = (EBox) new EBox(height, colonne);
+							break;
+						case 'W':
+							box = (WBox) new WBox(height, colonne);
+							break;
+						case 'D' :
+							box = (DBox) new DBox(height, colonne);
+							depart = (DBox) box;
+							break;
+						case 'A' :
+							box = (ABox) new ABox(height, colonne);
+							arrivee = (ABox) box;
+							break;
+						default :
+							throw new MazeReadingException(fileName, height, "la case de coordonnées (" + Integer.toString(height) + "," + Integer.toString(colonne) + ") n'est pas traduisible en MBox.");
+						}
+						array.add(box);
+						liste.add(box);
+						
+					}
+					System.out.println("Ligne " + Integer.toString(height) + " lue !");
+					laby.add(array);
+					height ++;
+				}
+			} catch(FileNotFoundException e) {
+				System.out.println("Erreur : fichier introuvable. Vérifier l'adresse du fichier : " + fileName);
+				System.out.println(e);
+				throw e;
 			} catch(IOException e) {
-			System.out.println("Erreur : problème avec la fermeture du fichier");
-			System.out.println(e);
-			throw e;
+				System.out.println("Erreur : problème avec l'ouverture du fichier");
+				System.out.println(e);
+				throw e;
+			} catch(MazeReadingException e) {
+				throw e;
+			} catch (IndexOutOfBoundsException e) {
+				System.out.println("Erreur en lisant la case de coordonnées (" + Integer.toString(height) + "," + Integer.toString(colonne) + ") : la case est introuvable.");
+				System.out.println(e);
+				throw e;
+			} finally {
+				try {
+					highlighted = false;
+					stateChanges();
+					text.close();
+					System.out.println("Fermeture du fichier à l'adresse " + fileName);
+				} catch(IOException e) {
+				System.out.println("Erreur : problème avec la fermeture du fichier");
+				System.out.println(e);
+				throw e;
+				}
 			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
-	public final void saveToTextFile(String fileName) throws FileNotFoundException {
-		PrintWriter pw = null;
-		int ligne = 0;
-		int colonne = 0;
-		try {
-			pw = new PrintWriter(fileName);
-			for (ligne = 0; ligne < height; ligne++) {
-				System.out.println("Sauvegarde de la ligne " + Integer.toString(ligne) + "...");
-				for (colonne = 0; colonne < width; colonne++) {
-					pw.print(laby.get(ligne).get(colonne).getLabel());
-				};
-				pw.println();
-			};
-		System.out.println("Sauvegarde terminée !");
-		} catch (FileNotFoundException e) {
-			System.out.println("Erreur : Impossible d'ouvrir ou bien d'écrire le fichier à l'emplacement" + fileName + ".");
-			throw e;
-		} catch (SecurityException e) {
-			System.out.println("Erreur : accès à l'écriture d'un fichier à l'emplacement " + fileName + " refusé.");
-			throw e;
-		} catch (NullPointerException e) {
-			System.out.println("Erreur : la case de coordonnées (" + Integer.toString(ligne) + "," + Integer.toString(colonne) + ") est null, elle ne peut être enregistrée.");
-			throw e;
-		} catch (IndexOutOfBoundsException e) {
-			System.out.println("Erreur : la ligne numéro " + Integer.toString(ligne) + " possède un nombre insuffisant de cases.");
-			throw e;
-		} finally {
+	public final boolean saveToTextFile(String fileName) throws FileNotFoundException {
+		if (isValidFileName(fileName)) {
+			PrintWriter pw = null;
+			int ligne = 0;
+			int colonne = 0;
+			fileName = "data/" + fileName + ".txt";
 			try {
-				pw.close();
-				System.out.println("Fermeture du fichier à l'adresse " + fileName);
-			} catch(Exception e) {
-			System.out.println("Erreur : problème avec la fermeture du fichier");
-			throw e;
+				pw = new PrintWriter(fileName);
+				for (ligne = 0; ligne < height; ligne++) {
+					System.out.println("Sauvegarde de la ligne " + Integer.toString(ligne) + "...");
+					for (colonne = 0; colonne < width; colonne++) {
+						pw.print(laby.get(ligne).get(colonne).getLabel());
+					};
+					pw.println();
+				};
+			System.out.println("Sauvegarde terminée !");
+			} catch (FileNotFoundException e) {
+				System.out.println("Erreur : Impossible d'ouvrir ou bien d'écrire le fichier à l'emplacement" + fileName + ".");
+				throw e;
+			} catch (SecurityException e) {
+				System.out.println("Erreur : accès à l'écriture d'un fichier à l'emplacement " + fileName + " refusé.");
+				throw e;
+			} catch (NullPointerException e) {
+				System.out.println("Erreur : la case de coordonnées (" + Integer.toString(ligne) + "," + Integer.toString(colonne) + ") est null, elle ne peut être enregistrée.");
+				throw e;
+			} catch (IndexOutOfBoundsException e) {
+				System.out.println("Erreur : la ligne numéro " + Integer.toString(ligne) + " possède un nombre insuffisant de cases.");
+				throw e;
+			} finally {
+				try {
+					pw.close();
+					System.out.println("Fermeture du fichier à l'adresse " + fileName);
+				} catch(Exception e) {
+				System.out.println("Erreur : problème avec la fermeture du fichier");
+				throw e;
+				}
 			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

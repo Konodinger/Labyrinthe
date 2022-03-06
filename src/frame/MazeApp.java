@@ -7,23 +7,20 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import Actions.SaveAction;
 import maze.*;
 
 public class MazeApp extends JFrame implements ChangeListener {
 
 	private final MazeMenuBar menuBar;
 	private final WindowPanel windowPanel;
+	private final Maze maze;
 	
-	private static Maze maze;
 	private static boolean keyA;
 	private static boolean keyD;
 
 	public Maze getMaze() {
 		return maze;
-	}
-
-	public void setMaze(Maze maze) {
-		MazeApp.maze = maze;
 	}
 
 	public void setInputMode(char inputMode) {
@@ -68,4 +65,7 @@ public class MazeApp extends JFrame implements ChangeListener {
 		
 	}
 	
+	public void newMazeApp(Maze newMaze) {
+		new MazeApp(maze);
+	}
 }

@@ -16,7 +16,7 @@ import maze.Maze;
 
 public class MainTest {
 	
-	private static String file = "data/labyrinthe";
+	private static String file = "labyrinthe";
 	private static Maze maze;
 	
 	public static void main(String[] args) {
@@ -70,7 +70,7 @@ public class MainTest {
 	private static void mazeInit(String adresse) throws Exception {
 		try {
 			maze = new Maze(new ArrayList<ArrayList<MBox>>());
-			maze.initFromTextFile(adresse + ".txt");
+			maze.initFromTextFile(adresse);
 		} catch (Exception e) {
 			System.out.println("Erreur durant la création du labyrinthe");
 			throw e;
@@ -89,7 +89,7 @@ public class MainTest {
 		try {
 			/*Test de l'erreur de sauvegarde :
 			maze.getLaby().get(2).remove(2); */
-			maze.saveToTextFile(adresse + ".txt");
+			maze.saveToTextFile(adresse);
 		} catch (Exception e) {
 			System.out.println("Erreur durant la sauvegarde du labyrinthe");
 			throw e;

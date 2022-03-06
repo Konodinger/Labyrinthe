@@ -5,20 +5,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import Actions.NewAction;
 import frame.MazeApp;
 
-public class NewButton extends JButton implements ActionListener {
+public class NewButton extends JButton {
 	
 	private final MazeApp app;
 	
 	public NewButton(MazeApp app) {
 		super ("Nouveau");
 		this.app = app;
-		addActionListener(this);
-		
-	}
-
-	public void actionPerformed(ActionEvent e) {
+		addActionListener(new NewAction(app));
 		
 	}
 

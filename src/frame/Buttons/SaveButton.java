@@ -6,21 +6,18 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import Actions.SaveAction;
 import frame.MazeApp;
 
-public class SaveButton extends JButton implements ActionListener {
+public class SaveButton extends JButton {
 	
 	private final MazeApp app;
 	
 	public SaveButton(MazeApp app) {
 		super("Sauvegarder");
 		this.app = app;
-		addActionListener(this);
+		addActionListener(new SaveAction(app));
 		
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		Object saveFile = JOptionPane.showInternalInputDialog(null, "Choisissez un emplacement de sauvegarde.");
 	}
 
 }
