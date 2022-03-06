@@ -19,6 +19,8 @@ public class QuitMenuItem extends JMenuItem implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent ev) {
-		System.exit(0);
+		if (ev.getModifiers() == 16) { 
+			System.exit(0);
+		}
 	}
 }

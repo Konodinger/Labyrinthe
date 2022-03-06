@@ -11,13 +11,17 @@ public class MazeTile extends JPanel {
 	
 	private final MazeApp app;
 	private MBox box;
+	private final int x;
+	private final int y;
 	private final TileMouseListener tileMouseListener;
 	
 	public MazeTile(MazeApp app, MBox box) {
 		this.app = app;
 		this.box = box;
+		x = box.getX();
+		y = box.getY();
 		setBackground();
-		tileMouseListener = new TileMouseListener(this);
+		tileMouseListener = new TileMouseListener(app, x, y);
 		
 		addMouseListener(tileMouseListener);
 	}
@@ -50,14 +54,10 @@ public class MazeTile extends JPanel {
 	}
 
 	public void notifyForUpdate() {
+		box = app.getMaze().getLaby().get(x).get(y);
 		setBackground();
 		repaint();
 		
-	}
-
-	public void replace() {
-		box = app.getMaze().changeBox(box.getX(), box.getY());
-		notifyForUpdate();
 	}
 
 }

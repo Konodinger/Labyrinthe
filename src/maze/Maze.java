@@ -20,17 +20,17 @@ import dijkstra.VertexInterface;
 
 public class Maze implements GraphInterface{
 	//Le labyrinthe est entièrement défini par son tableau de cases.
-	private static ArrayList<ArrayList<MBox>> laby;
-	private static int width;
-	private static int height;
-	private static ArrayList<VertexInterface> liste;
-	private static DBox depart;
-	private static ABox arrivee;
-	private static boolean highlighted;
+	private ArrayList<ArrayList<MBox>> laby;
+	private int width;
+	private int height;
+	private ArrayList<VertexInterface> liste;
+	private DBox depart;
+	private ABox arrivee;
+	private boolean highlighted;
 	private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
 	
 	public Maze(ArrayList<ArrayList<MBox>> laby) throws Exception{
-		Maze.laby = laby;
+		this.laby = laby;
 		liste = null;
 		depart = null;
 		arrivee = null;
@@ -153,6 +153,59 @@ public class Maze implements GraphInterface{
 		return Double.POSITIVE_INFINITY;
 	}
 	
+	public void changeBoxEW(int x, int y) {
+		MBox box;
+		switch (laby.get(x).get(y).getLabel()) {
+		case "W" :
+			laby.get(x).set(y, box = new EBox(x, y));
+			break;
+		case "A" :
+			arrivee = null;
+		case "D" :
+			depart = null;
+		default :
+			laby.get(x).set(y, box = new WBox(x, y));
+		}
+		liste.set(x*width + y, box);
+		stateChanges();
+	}
+	
+	public void changeBoxD(int x, int y) {
+		DBox dBox;
+		if (depart != null) {
+			int xD = depart.getX();
+			int yD = depart.getY();
+			EBox eBox;
+			laby.get(xD).set(yD, eBox = new EBox(xD, yD));
+			liste.set(x*width + y, eBox);
+		}
+		if (laby.get(x).get(y) == arrivee) {
+			arrivee = null;
+		}
+		laby.get(x).set(y, dBox = new DBox(x, y));
+		liste.set(x*width + y, dBox);
+		depart = dBox;
+		stateChanges();
+	}
+	
+	public void changeBoxA(int x, int y) {
+		ABox aBox;
+		if (arrivee != null) {
+			int xA = arrivee.getX();
+			int yA = arrivee.getY();
+			EBox eBox;
+			laby.get(xA).set(yA, eBox = new EBox(xA, yA));
+			liste.set(x*width + y, eBox);
+		}
+		if (laby.get(x).get(y) == depart) {
+			depart = null;
+		}
+		laby.get(x).set(y, aBox = new ABox(x, y));
+		liste.set(x*width + y, aBox);
+		arrivee = aBox;
+		stateChanges();
+	}
+	
 	public boolean resolve() {
 		if ((depart != null) && (arrivee != null)) {
 			final Previous previous = (Previous) Dijkstra.dijkstra((GraphInterface) this, (VertexInterface) depart);
@@ -185,26 +238,6 @@ public class Maze implements GraphInterface{
 		}
 		highlighted = false;
 		stateChanges();
-	}
-	
-	public MBox changeBox(int x, int y) {
-		if (highlighted) {
-			eraseHighlight();
-		}
-		MBox box;
-		switch (laby.get(x).get(y).getLabel()) {
-		case "W" :
-			laby.get(x).set(y, box = new EBox(x, y));
-			break;
-		case "A" :
-			arrivee = null;
-		case "D" :
-			depart = null;
-		default :
-			laby.get(x).set(y, box = new WBox(x, y));
-		}
-		liste.set(x*width + y, box);
-		return box;
 	}
 	
 	
