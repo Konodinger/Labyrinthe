@@ -1,12 +1,15 @@
 package frame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import Actions.QuitAction;
 import Actions.SaveAction;
 import maze.*;
 
@@ -14,13 +17,21 @@ public class MazeApp extends JFrame implements ChangeListener {
 
 	private final MazeMenuBar menuBar;
 	private final WindowPanel windowPanel;
-	private final Maze maze;
+	private Maze maze;
+	private final MazeWindowListener mazeWindowListener;
 	
 	private static boolean keyA;
 	private static boolean keyD;
 
 	public Maze getMaze() {
 		return maze;
+	}
+	
+	public void setMaze(Maze maze) {
+		this.maze = maze;
+		maze.addObserver(this);
+		stateChanged(new ChangeEvent(this));
+		
 	}
 
 	public void setInputMode(char inputMode) {
@@ -51,10 +62,12 @@ public class MazeApp extends JFrame implements ChangeListener {
 		setKeyD(false);
 		setJMenuBar(menuBar = new MazeMenuBar(this));
 		setContentPane(windowPanel = new WindowPanel(this));
+		mazeWindowListener = new MazeWindowListener(this);
+		addWindowListener(mazeWindowListener);
 		maze.addObserver(this);
 
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		pack();
 		setVisible(true);
 	}
@@ -62,10 +75,8 @@ public class MazeApp extends JFrame implements ChangeListener {
 	@Override
 	public void stateChanged(ChangeEvent ev) {
 		windowPanel.notifyForUpdate();
+		revalidate();
 		
 	}
-	
-	public void newMazeApp(Maze newMaze) {
-		new MazeApp(maze);
-	}
+
 }

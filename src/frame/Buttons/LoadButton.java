@@ -5,20 +5,18 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
+import Actions.LoadAction;
+import Actions.NewAction;
 import frame.MazeApp;
 
-public class LoadButton extends JButton implements ActionListener {
+public class LoadButton extends JButton {
 	
 	private final MazeApp app;
 	
 	public LoadButton(MazeApp app) {
 		super("Charger");
 		this.app = app;
-		addActionListener(this);
-		
-	}
-
-	public void actionPerformed(ActionEvent e) {
+		addActionListener(new LoadAction(app));
 		
 	}
 

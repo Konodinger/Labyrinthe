@@ -18,8 +18,9 @@ public class TileMouseListener extends MouseAdapter {
 	}
 	
 	@Override
-	public final void mousePressed(MouseEvent e) {
+	public final void mousePressed(MouseEvent ev) {
 		
+		app.getMaze().setSaved(false);
 		if (app.getMaze().getHighlighted()) {
 			app.getMaze().eraseHighlight();
 		}

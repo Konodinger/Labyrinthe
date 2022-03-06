@@ -1,6 +1,7 @@
 package frame;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -14,29 +15,32 @@ import maze.Maze;
 public class MazePanel extends JPanel {
 	
 	private final MazeApp app;
-	private final Maze maze;
-	private static ArrayList<MazeTile> tileList;
+	private ArrayList<MazeTile> liste;
 	
 	public MazePanel(MazeApp app) {
+		super();
 		this.app = app;
-		maze = app.getMaze();
-		tileList = new ArrayList<MazeTile>();
-		MazeTile nTile;
-		setLayout(new GridLayout(maze.getHeight(), maze.getWidth()));
-		for (VertexInterface box : maze.vertexList()) {
-			nTile = new MazeTile(app, (MBox) box);
-			add(nTile);
-			tileList.add(nTile);
-		}
+		printMaze(app.getMaze());
 		
 		setBackground(Color.WHITE);
 		setPreferredSize(new Dimension(500,500));
 	}
+	
+	public void printMaze(Maze maze) {
+		MazeTile nTile;
+		liste = new ArrayList<MazeTile>();
+		setLayout(new GridLayout(maze.getHeight(), maze.getWidth()));
+		for (VertexInterface box : maze.vertexList()) {
+			nTile = new MazeTile(app, (MBox) box);
+			add(nTile);
+			liste.add(nTile);
+		}
+	}
 
 	public void notifyForUpdate() {
-		for (MazeTile tile : tileList) {
-			tile.notifyForUpdate();
-		}
+		removeAll();
+		printMaze(app.getMaze());
+		revalidate();
 	}
 
 }

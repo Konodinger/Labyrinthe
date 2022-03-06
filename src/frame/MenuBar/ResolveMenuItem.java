@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 
+import Actions.SaveAction;
 import frame.MazeApp;
 
 public class ResolveMenuItem extends JMenuItem implements ActionListener {
@@ -14,7 +15,7 @@ public class ResolveMenuItem extends JMenuItem implements ActionListener {
 	public ResolveMenuItem(MazeApp app) {
 		super("Résoudre");
 		this.app = app;
-		addActionListener(this);
+		addActionListener(new SaveAction(app));
 		
 	}
 

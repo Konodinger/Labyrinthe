@@ -5,22 +5,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 
+import Actions.QuitAction;
 import frame.MazeApp;
 
-public class QuitMenuItem extends JMenuItem implements ActionListener {
+public class QuitMenuItem extends JMenuItem {
 
 	private final MazeApp app;
 	
 	public QuitMenuItem(MazeApp app) {
 		super("Quitter");
 		this.app = app;
-		addActionListener(this);
+		addActionListener(new QuitAction(app));
 		
-	}
-	
-	public void actionPerformed(ActionEvent ev) {
-		if (ev.getModifiers() == 16) { 
-			System.exit(0);
-		}
 	}
 }

@@ -28,6 +28,7 @@ public class Maze implements GraphInterface{
 	private DBox depart;
 	private ABox arrivee;
 	private boolean highlighted;
+	private boolean isSaved;
 	private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
 	
 	public Maze(ArrayList<ArrayList<MBox>> laby) throws Exception{
@@ -37,6 +38,7 @@ public class Maze implements GraphInterface{
 		arrivee = null;
 		height = laby.size();
 		highlighted = false;
+		isSaved = false;
 		if (height == 0 ) {
 			width = 0;
 		} else {
@@ -98,6 +100,14 @@ public class Maze implements GraphInterface{
 	
 	public boolean getHighlighted() {
 		return highlighted;
+	}
+	
+	public boolean isSaved() {
+		return isSaved;
+	}
+
+	public void setSaved(boolean isSaved) {
+		this.isSaved = isSaved;
 	}
 	
 	
@@ -241,7 +251,6 @@ public class Maze implements GraphInterface{
 		stateChanges();
 	}
 	
-	
 	public boolean isValidFileName(final String fileName) {
 	    final File aFile = new File(fileName);
 	    try {
@@ -254,7 +263,7 @@ public class Maze implements GraphInterface{
 	    return true;
 	}
 	
-	public final boolean initFromTextFile(String fileName) throws IOException, MazeReadingException {
+	public boolean initFromTextFile(String fileName) throws IOException, MazeReadingException {
 		if (isValidFileName(fileName)) {
 			BufferedReader text = null;
 			int colonne = 0;
@@ -307,6 +316,7 @@ public class Maze implements GraphInterface{
 					laby.add(array);
 					height ++;
 				}
+				isSaved = true;
 			} catch(FileNotFoundException e) {
 				System.out.println("Erreur : fichier introuvable. Vérifier l'adresse du fichier : " + fileName);
 				System.out.println(e);
@@ -339,7 +349,7 @@ public class Maze implements GraphInterface{
 		}
 	}
 	
-	public final boolean saveToTextFile(String fileName) throws FileNotFoundException {
+	public boolean saveToTextFile(String fileName) throws FileNotFoundException {
 		if (isValidFileName(fileName)) {
 			PrintWriter pw = null;
 			int ligne = 0;
@@ -354,6 +364,7 @@ public class Maze implements GraphInterface{
 					};
 					pw.println();
 				};
+				isSaved = true;
 			System.out.println("Sauvegarde terminée !");
 			} catch (FileNotFoundException e) {
 				System.out.println("Erreur : Impossible d'ouvrir ou bien d'écrire le fichier à l'emplacement" + fileName + ".");
@@ -381,4 +392,5 @@ public class Maze implements GraphInterface{
 			return false;
 		}
 	}
+
 }

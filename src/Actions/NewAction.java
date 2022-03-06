@@ -57,9 +57,7 @@ private final MazeApp app;
 				}
 				
 				try {
-					Maze maze = new Maze(laby);
-					System.out.println("YO");
-					app.newMazeApp(maze);
+					app.setMaze(new Maze(laby));
 				} catch (Exception e) {
 					System.out.println("Erreur dans la création du nouveau labyrinthe.");
 				}
