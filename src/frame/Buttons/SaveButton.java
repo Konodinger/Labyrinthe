@@ -1,18 +1,22 @@
 package frame.Buttons;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
 import Actions.SaveAction;
 import frame.MazeApp;
 
 public class SaveButton extends JButton {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final MazeApp app;
 	
+	/**
+	 * Crée un bouton "Sauvegarder".
+	 * @param app L'application en cours.
+	 */
 	public SaveButton(MazeApp app) {
 		super("Sauvegarder");
 		this.app = app;

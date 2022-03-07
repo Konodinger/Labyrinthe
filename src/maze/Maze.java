@@ -31,6 +31,11 @@ public class Maze implements GraphInterface{
 	private boolean isSaved;
 	private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
 	
+	/**
+	 * Initialise le labyrinthe à partir d'un double tableau.
+	 * @param laby Double tableau de boîtes.
+	 * @throws Exception Le double tableau n'est pas conforme à la construction d'un labyrinthe.
+	 */
 	public Maze(ArrayList<ArrayList<MBox>> laby) throws Exception{
 		this.laby = laby;
 		liste = new ArrayList<VertexInterface>();
@@ -70,51 +75,97 @@ public class Maze implements GraphInterface{
 		stateChanges();
 	}
 	
+	/**
+	 * Getter du double tableau.
+	 * @return Double tableau de boîtes.
+	 */
 	public ArrayList<ArrayList<MBox>> getLaby() {
 		return laby;
 	}
 
+	/**
+	 * Getter de la liste de boîtes.
+	 * @return Liste ordonnée des boîtes du double tableau.
+	 */
 	public ArrayList<VertexInterface> vertexList() {
 		return liste;
 	}
 	
+	/**
+	 * Getter de la boîte départ.
+	 * @return Boîte départ.
+	 */
 	public DBox getDepart() {
 		return depart;
 	}
 	
+	/**
+	 * Getter de la boîte arrivée.
+	 * @return Boîte arrivée.
+	 */
 	public ABox getArrivee() {
 		return arrivee;
 	}
 	
+	/**
+	 * Getter de la largeur du labyrinthe.
+	 * @return Largeur du labyrinthe.
+	 */
 	public int getWidth() {
 		return width;
 	}
 
+	/**
+	 * Getter de la hauteur du labyrinthe.
+	 * @return Hauteur du labyrinthe.
+	 */
 	public int getHeight() {
 		return height;
 	}
 
+	/**
+	 * Indique la taille du labyrinthe en nombre de boîtes.
+	 * @return Taille du labyrinthe.
+	 */
 	public int length() {
 		return height*width;
 	}
 	
+	/**
+	 * Getter du surlignage.
+	 * @return Surlignage du labyrinthe.
+	 */
 	public boolean getHighlighted() {
 		return highlighted;
 	}
 	
+	/**
+	 * Getter indiquant si le labyrinthe actuel est sauvegardé.
+	 * @return Etat de sauvegarde du labyrinthe.
+	 */
 	public boolean isSaved() {
 		return isSaved;
 	}
 
+	/**
+	 * Setter de l'état de sauvegarde du labyrinthe.
+	 * @param isSaved Nouvel état de sauvegarde du labyrinthe.
+	 */
 	public void setSaved(boolean isSaved) {
 		this.isSaved = isSaved;
 	}
 	
-	
+	/**
+	 * Ajoute un observer.
+	 * @param listener Nouvel observer.
+	 */
 	public void addObserver(ChangeListener listener) {
 		listeners.add(listener);
 	}
 	
+	/**
+	 * Préviens les observers que l'état du labyrinthe a changé.
+	 */
 	public void stateChanges() {
 		ChangeEvent ev = new ChangeEvent(this);
 		for (ChangeListener listener : listeners) {
@@ -122,7 +173,11 @@ public class Maze implements GraphInterface{
 		}
 	}
 
-	
+	/**
+	 * Indique les voisins d'une boîte. Attention à bien convertir la MBox en VertexInterface.
+	 * @param sommet Boîte du labyrinthe.
+	 * @return Liste des voisins de sommet.
+	 */
 	public ArrayList<VertexInterface> successorVertex(VertexInterface sommet) {
 		final MBox box = (MBox) sommet;
 		final int x = box.getX();
@@ -143,6 +198,11 @@ public class Maze implements GraphInterface{
 		return voisins;
 	}
 
+	/**
+	 * Retourne le complémentaire d'un ensemble de boîte du labyrinthe.
+	 * @param A Ensemble de boîtes du labyrinthe.
+	 * @return Ensemble complémentaire.
+	 */
 	public ArrayList<VertexInterface> notIn(ASetInterface A) {
 		ArrayList<VertexInterface> notA = new ArrayList<VertexInterface>();
 		for (VertexInterface box : liste) {
@@ -153,6 +213,12 @@ public class Maze implements GraphInterface{
 		return notA;
 	}
 
+	/**
+	 * Retourne le poids entre deux boîtes du labyrinthe.
+	 * @param a Première boîte.
+	 * @param b Seconde boîte.
+	 * @return p(a,b) : 1 si les cases sont voisines, +infini sinon.
+	 */
 	public double p(VertexInterface a, VertexInterface b) {
 		if (!(a.getLabel().equals("W") || b.getLabel().equals("W"))) {
 			MBox aBox = (MBox) a;
@@ -164,6 +230,11 @@ public class Maze implements GraphInterface{
 		return Double.POSITIVE_INFINITY;
 	}
 	
+	/**
+	 * Change le type d'une boîte du labyrinthe : EBox si elle était WBox, et WBox sinon.
+	 * @param x Coordonnée verticale.
+	 * @param y Coordonnée horizontale.
+	 */
 	public void changeBoxEW(int x, int y) {
 		MBox box;
 		switch (laby.get(x).get(y).getLabel()) {
@@ -181,6 +252,11 @@ public class Maze implements GraphInterface{
 		stateChanges();
 	}
 	
+	/**
+	 * Change le type d'une boîte du labyrinthe en DBox. Si une DBox existait déjà, celle-ci est convertie en EBox.
+	 * @param x Coordonnée verticale.
+	 * @param y Coordonnée horizontale.
+	 */
 	public void changeBoxD(int x, int y) {
 		DBox dBox;
 		if (depart != null) {
@@ -199,6 +275,11 @@ public class Maze implements GraphInterface{
 		stateChanges();
 	}
 	
+	/**
+	 * Change le type d'une boîte du labyrinthe en ABox. Si une ABox existait déjà, celle-ci est convertie en EBox.
+	 * @param x Coordonnée verticale.
+	 * @param y Coordonnée horizontale.
+	 */
 	public void changeBoxA(int x, int y) {
 		ABox aBox;
 		if (arrivee != null) {
@@ -217,6 +298,10 @@ public class Maze implements GraphInterface{
 		stateChanges();
 	}
 	
+	/**
+	 * Résoud le labyrinthe par l'algorithme de Dijkstra et surligne le chemin-solution s'il existe.
+	 * @return La résolvabilité du labyrinthe.
+	 */
 	public boolean resolve() {
 		if ((depart != null) && (arrivee != null)) {
 			final Previous previous = (Previous) Dijkstra.dijkstra((GraphInterface) this, (VertexInterface) depart);
@@ -226,6 +311,11 @@ public class Maze implements GraphInterface{
 		return false;
 	}
 	
+	/**
+	 * Surligne le chemin entre le départ et l'arrivée à l'aide de la table de hashage previous.
+	 * @param previous Table de hashage indiquant le prédecesseur d'une boîte.
+	 * @return La resolvabilité du labyrinthe.
+	 */
 	public boolean path(Previous previous) {
 		MBox chemin = (MBox) previous.getPrevious(arrivee);
 		int securite = height*width;
@@ -239,6 +329,9 @@ public class Maze implements GraphInterface{
 		return (chemin == depart);
 	}
 	
+	/**
+	 * Efface le sulignage du labyrinthe.
+	 */
 	public void eraseHighlight() {
 		for (VertexInterface box : liste) {
 			((MBox) box).setHighlight(false);
@@ -247,6 +340,11 @@ public class Maze implements GraphInterface{
 		stateChanges();
 	}
 	
+	/**
+	 * Vérifie si le string est valide en tant que nom de fichier.
+	 * @param fileName Nom du fichier.
+	 * @return La validité du nom de fichier.
+	 */
 	public boolean isValidFileName(final String fileName) {
 	    final File aFile = new File(fileName);
 	    try {
@@ -259,6 +357,13 @@ public class Maze implements GraphInterface{
 	    return true;
 	}
 	
+	/**
+	 * Initialise le labyrinthe à partir d'un fichier.
+	 * @param fileName Nom du fichier. Le fichier doit être un .txt (à ne pas ajouter) et se trouver dans le dossier data/.
+	 * @return La réussite de l'initialisation.
+	 * @throws IOException Le programme ne parvient pas à ouvrir ou fermer le fichier.
+	 * @throws MazeReadingException Le programme ne parvient pas à traduire le fichier en labyrinthe.
+	 */
 	public boolean initFromTextFile(String fileName) throws IOException, MazeReadingException {
 		if (isValidFileName(fileName)) {
 			BufferedReader text = null;
@@ -343,6 +448,12 @@ public class Maze implements GraphInterface{
 		}
 	}
 	
+	/**
+	 * Sauvegarde le labyrinthe dans un fichier
+	 * @param fileName Emplacement du fichier dans lequel sauvegarder le labyrinthe.Le fichier sera un .txt (à ne pas ajouter) et se trouvera dans le dossier data/.
+	 * @return La réussite de la sauvegarde.
+	 * @throws FileNotFoundException Le programme ne parvient pas à ouvrir ou fermer le fichier.
+	 */
 	public boolean saveToTextFile(String fileName) throws FileNotFoundException {
 		if (isValidFileName(fileName)) {
 			PrintWriter pw = null;

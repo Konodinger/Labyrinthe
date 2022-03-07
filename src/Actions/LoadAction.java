@@ -9,13 +9,25 @@ import frame.MazeApp;
 
 public class LoadAction extends AbstractAction{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final MazeApp app;
 	
+	/**
+	 * Initialise LoadAction.
+	 * @param app L'application en cours.
+	 */
 	public LoadAction(MazeApp app) {
 		super();
 		this.app = app;
 	}
 	
+	/**
+	 * Charge un labyrinthe depuis un fichier dont on demande le nom.
+	 * @return La réussite du chargement.
+	 */
 	public boolean load() {
 		boolean notLoaded = true;
 		while (notLoaded) {
@@ -38,6 +50,9 @@ public class LoadAction extends AbstractAction{
 		return !notLoaded;
 	}
 	
+	/**
+	 * Lance load() lorsqu'un clic gauche est effectué.
+	 */
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getModifiers() == 16) {
 			load();

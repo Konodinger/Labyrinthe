@@ -6,10 +6,18 @@ import frame.MazeApp;
 
 public class FileMenu extends JMenu {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final NewMenuItem newItem;
 	private final LoadMenuItem load;
 	private final SaveMenuItem save;
 	
+	/**
+	 * Crée un menu "Fichier"
+	 * @param app L'application en cours.
+	 */
 	public FileMenu (MazeApp app) {
 		super("Fichier");
 		

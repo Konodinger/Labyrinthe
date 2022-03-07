@@ -3,6 +3,16 @@ package dijkstra;
 import java.util.ArrayList;
 
 public class Dijkstra{
+	
+	/**
+	 * Execute l'algorithme de Dijkstra.
+	 * @param g Le graphe à résoudre.
+	 * @param r Le point de départ.
+	 * @param a L'ensemble des points à exclure.
+	 * @param pi La fonction distance.
+	 * @param previous La fonction donnant le prédecesseur.
+	 * @return La fonction previous mise à jour.
+	 */
 	private static PreviousInterface dijkstra(GraphInterface g,
 									   VertexInterface r,
 									   ASetInterface a,
@@ -41,6 +51,12 @@ public class Dijkstra{
 		return previous;
 	}
 	
+	/**
+	 * Execute l'algorithme de Dijkstra pour un graphe neutre.
+	 * @param g Le graphe à résoudre.
+	 * @param r Le point de départ.
+	 * @return Une fonction previous donnant le prédecesseur des cases.
+	 */
 	public static PreviousInterface dijkstra(GraphInterface g, VertexInterface r) {
 		ASet a = new ASet();
 		Pi pi = new Pi();

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"Actions"},{"l":"All Packages","u":"allpackages-index.html"},{"l":"dijkstra"},{"l":"frame"},{"l":"frame.Buttons"},{"l":"frame.MenuBar"},{"l":"main"},{"l":"maze"}];updateSearchResults();

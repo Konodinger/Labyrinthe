@@ -3,14 +3,18 @@ package frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import maze.Maze;
-
 public class TileMouseListener extends MouseAdapter {
 	
 	private final MazeApp app;
 	private final int x;
 	private final int y;
 	
+	/**
+	 * Initialise le MouseListener d'une case de l'application.
+	 * @param app L'application en cours.
+	 * @param x La coordonnée verticale.
+	 * @param y La coordonnée horizontale.
+	 */
 	public TileMouseListener(MazeApp app, int x, int y) {
 		super();
 		this.app = app;
@@ -19,6 +23,9 @@ public class TileMouseListener extends MouseAdapter {
 		
 	}
 	
+	/**
+	 * Procède à un changement de boîte lorsqu'un des boutons de souris est cliqué.
+	 */
 	@Override
 	public void mousePressed(MouseEvent ev) {
 		app.getMaze().setSaved(false);

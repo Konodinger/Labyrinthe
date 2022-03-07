@@ -9,19 +9,26 @@ public class Previous extends Hashtable<VertexInterface, VertexInterface> implem
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Initialise la fontion de hachage.
+	 */
 	public Previous() {
 		super();
 	}
 	
+	/**
+	 * Associe à un sommet fils le sommet père.
+	 */
 	@Override
 	public void setPrevious(VertexInterface fils, VertexInterface pere) {
-		// Inscrit dans la table de hachage que le sommet fils a pour prédécesseur le sommet père
 		put(fils, pere);
 	}
 
+	/**
+	 * Donne le sommet père associé à un sommet fils, ou null si celui-ci n'en a pas encore eu d'associé.
+	 */
 	@Override
 	public VertexInterface getPrevious(VertexInterface fils) {
-		// Indique le prédécesseur du sommet indiqué, ou null si celui-ci n'en a pas encore eu de désigné.
 		return get(fils);
 	}
 }

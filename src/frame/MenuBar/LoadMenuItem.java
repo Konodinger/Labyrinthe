@@ -1,18 +1,22 @@
 package frame.MenuBar;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JMenuItem;
 
 import Actions.LoadAction;
-import Actions.NewAction;
 import frame.MazeApp;
 
 public class LoadMenuItem extends JMenuItem {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final MazeApp app;
 	
+	/**
+	 * Crée un bouton de menu "Charger"
+	 * @param app L'application en cours.
+	 */
 	public LoadMenuItem(MazeApp app) {
 		super("Charger");
 		this.app = app;

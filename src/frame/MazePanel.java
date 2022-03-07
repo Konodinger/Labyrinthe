@@ -1,10 +1,8 @@
 package frame;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -14,9 +12,16 @@ import maze.Maze;
 
 public class MazePanel extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final MazeApp app;
-	private ArrayList<MazeTile> liste;
 	
+	/**
+	 * Initialise le tableau représentant le labyrinthe.
+	 * @param app L'application en cours.
+	 */
 	public MazePanel(MazeApp app) {
 		super();
 		this.app = app;
@@ -26,17 +31,22 @@ public class MazePanel extends JPanel {
 		setPreferredSize(new Dimension(700,700));
 	}
 	
+	/**
+	 * Crée des cases correspondantes aux boîtes du labyrinthe.
+	 * @param maze
+	 */
 	public void printMaze(Maze maze) {
 		MazeTile nTile;
-		liste = new ArrayList<MazeTile>();
 		setLayout(new GridLayout(maze.getHeight(), maze.getWidth()));
 		for (VertexInterface box : maze.vertexList()) {
 			nTile = new MazeTile(app, (MBox) box);
 			add(nTile);
-			liste.add(nTile);
 		}
 	}
 
+	/**
+	 * Met à jour ses cases en cas de changement du labyrinthe.
+	 */
 	public void notifyForUpdate() {
 		removeAll();
 		printMaze(app.getMaze());
