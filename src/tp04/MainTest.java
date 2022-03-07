@@ -47,16 +47,8 @@ public class MainTest {
 			System.out.println();*/
 			
 			//Chargement du labyinthe à  partir d'un fichier
-			mazeInit();
-			
-			//Resolution du labyrinthe
-			//maze.resolve();
-			
-			//Impression de dijkstra
-			mazePrint();
-			
-			//Sauvegarde du labyrinthe
-			mazeSave();
+			maze = new Maze(new ArrayList<ArrayList<MBox>>());
+			maze.initFromTextFile(file);
 			
 			//Création de l'IHM
 			new MazeApp(maze);
@@ -66,56 +58,5 @@ public class MainTest {
 			System.out.println(e);
 		}
 	}
-	
-	private static void mazeInit(String adresse) throws Exception {
-		try {
-			maze = new Maze(new ArrayList<ArrayList<MBox>>());
-			maze.initFromTextFile(adresse);
-		} catch (Exception e) {
-			System.out.println("Erreur durant la création du labyrinthe");
-			throw e;
-		}
-	}
-	
-	private static void mazeInit() throws Exception {
-		try {
-			mazeInit(file);
-		} catch (Exception e) {
-			throw e;
-		}
-	}
-	
-	private static void mazeSave(String adresse) throws Exception {
-		try {
-			/*Test de l'erreur de sauvegarde :
-			maze.getLaby().get(2).remove(2); */
-			maze.saveToTextFile(adresse);
-		} catch (Exception e) {
-			System.out.println("Erreur durant la sauvegarde du labyrinthe");
-			throw e;
-		}
-	}
-	
-	private static void mazeSave() throws Exception {
-		try {
-			mazeSave(file + "-S");
-		} catch (Exception e) {
-			throw e;
-		}
-	}
-	
-	private static void mazePrint() {
-		for (ArrayList<MBox> ligne : maze.getLaby()) {
-			for (MBox box : ligne) {
-				if (box.getHighlight()) {
-					System.out.print(".");
-				} else {
-					System.out.print(box.getLabel());
-				}
-			}
-			System.out.println();
-		}
-	}
-	
 
 }

@@ -70,12 +70,17 @@ public class MazeApp extends JFrame implements ChangeListener {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		pack();
 		setVisible(true);
+		
+		JOptionPane.showInternalMessageDialog(windowPanel, "Bienvenue ! \n\n"
+				+ "Commandes pour l'édition de texte :\n"
+				+ " - Clic gauche pour poser/retirer un mur\n"
+				+ " - Clic droit pour poser une case départ\n"
+				+ " - Clic central (clic molette) pour poser une case arrivée", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent ev) {
 		windowPanel.notifyForUpdate();
-		revalidate();
 		
 	}
 

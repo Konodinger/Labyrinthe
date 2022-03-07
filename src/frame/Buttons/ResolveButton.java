@@ -4,21 +4,18 @@ import java.awt.event.*;
 
 import javax.swing.JButton;
 
+import Actions.ResolveAction;
 import frame.MazeApp;
 
-public class ResolveButton extends JButton implements ActionListener {
+public class ResolveButton extends JButton {
 	
 	private final MazeApp app;
 	
 	public ResolveButton(MazeApp app) {
 		super("Résoudre");
 		this.app = app;
-		addActionListener(this);
+		addActionListener(new ResolveAction(app));
 		
-	}
-	
-	public void actionPerformed(ActionEvent ev) {
-		app.getMaze().resolve();
 	}
 	
 }

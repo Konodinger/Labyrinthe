@@ -40,7 +40,6 @@ private final MazeApp app;
 	}
 
 	public void actionPerformed(ActionEvent ev) {
-		System.out.println("Hey");
 		ArrayList<ArrayList<MBox>> laby = new ArrayList<ArrayList<MBox>>();
 		int colonne;
 		int ligne;

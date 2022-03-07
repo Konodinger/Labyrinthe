@@ -3,6 +3,8 @@ package frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import maze.Maze;
+
 public class TileMouseListener extends MouseAdapter {
 	
 	private final MazeApp app;
@@ -18,19 +20,23 @@ public class TileMouseListener extends MouseAdapter {
 	}
 	
 	@Override
-	public final void mousePressed(MouseEvent ev) {
-		
+	public void mousePressed(MouseEvent ev) {
 		app.getMaze().setSaved(false);
 		if (app.getMaze().getHighlighted()) {
 			app.getMaze().eraseHighlight();
 		}
-		
-		if (MazeApp.isKeyA()) {
-			app.getMaze().changeBoxA(x, y);
-		} else if (MazeApp.isKeyD()) {
-			app.getMaze().changeBoxD(x, y);
-		} else {
+		switch(ev.getButton()) {
+		case MouseEvent.BUTTON1 :
 			app.getMaze().changeBoxEW(x, y);
+			break;
+		case MouseEvent.BUTTON2 :
+			app.getMaze().changeBoxD(x, y);
+			break;
+		case MouseEvent.BUTTON3 :
+			app.getMaze().changeBoxA(x, y);
+			break;
+			
 		}
 	}
+	
 }

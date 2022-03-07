@@ -23,7 +23,7 @@ public class MazePanel extends JPanel {
 		printMaze(app.getMaze());
 		
 		setBackground(Color.WHITE);
-		setPreferredSize(new Dimension(500,500));
+		setPreferredSize(new Dimension(700,700));
 	}
 	
 	public void printMaze(Maze maze) {
@@ -40,7 +40,6 @@ public class MazePanel extends JPanel {
 	public void notifyForUpdate() {
 		removeAll();
 		printMaze(app.getMaze());
-		revalidate();
 	}
 
 }

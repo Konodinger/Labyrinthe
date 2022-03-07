@@ -188,7 +188,7 @@ public class Maze implements GraphInterface{
 			int yD = depart.getY();
 			EBox eBox;
 			laby.get(xD).set(yD, eBox = new EBox(xD, yD));
-			liste.set(x*width + y, eBox);
+			liste.set(xD*width + yD, eBox);
 		}
 		if (laby.get(x).get(y) == arrivee) {
 			arrivee = null;
@@ -206,7 +206,7 @@ public class Maze implements GraphInterface{
 			int yA = arrivee.getY();
 			EBox eBox;
 			laby.get(xA).set(yA, eBox = new EBox(xA, yA));
-			liste.set(x*width + y, eBox);
+			liste.set(xA*width + yA, eBox);
 		}
 		if (laby.get(x).get(y) == depart) {
 			depart = null;
@@ -220,13 +220,9 @@ public class Maze implements GraphInterface{
 	public boolean resolve() {
 		if ((depart != null) && (arrivee != null)) {
 			final Previous previous = (Previous) Dijkstra.dijkstra((GraphInterface) this, (VertexInterface) depart);
-			System.out.println("Algorithme de dijkstra effectué !");
 			//Tracé du chemin
-			if (path(previous)) {
-				return true;
-			}
+			return (path(previous));
 		}
-		System.out.println("Le labyrinthe n'est pas résolvable.");
 		return false;
 	}
 	
@@ -312,7 +308,6 @@ public class Maze implements GraphInterface{
 						liste.add(box);
 						
 					}
-					System.out.println("Ligne " + Integer.toString(height) + " lue !");
 					laby.add(array);
 					height ++;
 				}
@@ -336,7 +331,6 @@ public class Maze implements GraphInterface{
 					highlighted = false;
 					stateChanges();
 					text.close();
-					System.out.println("Fermeture du fichier à l'adresse " + fileName);
 				} catch(IOException e) {
 				System.out.println("Erreur : problème avec la fermeture du fichier");
 				System.out.println(e);
@@ -358,14 +352,12 @@ public class Maze implements GraphInterface{
 			try {
 				pw = new PrintWriter(fileName);
 				for (ligne = 0; ligne < height; ligne++) {
-					System.out.println("Sauvegarde de la ligne " + Integer.toString(ligne) + "...");
 					for (colonne = 0; colonne < width; colonne++) {
 						pw.print(laby.get(ligne).get(colonne).getLabel());
 					};
 					pw.println();
 				};
 				isSaved = true;
-			System.out.println("Sauvegarde terminée !");
 			} catch (FileNotFoundException e) {
 				System.out.println("Erreur : Impossible d'ouvrir ou bien d'écrire le fichier à l'emplacement" + fileName + ".");
 				throw e;
@@ -381,7 +373,6 @@ public class Maze implements GraphInterface{
 			} finally {
 				try {
 					pw.close();
-					System.out.println("Fermeture du fichier à l'adresse " + fileName);
 				} catch(Exception e) {
 				System.out.println("Erreur : problème avec la fermeture du fichier");
 				throw e;
